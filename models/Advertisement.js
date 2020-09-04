@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 const mongoose = require('mongoose');
@@ -6,9 +7,9 @@ const mongoose = require('mongoose');
 const advertisementSchema = mongoose.Schema({
     name: { type: String, required:true, index: true},
     sale: {type: Boolean, required: true},
-    price: {type: Number, required: true},
-    photo: {type: Buffer},
-    tags: {type: [String]}
+    price: {type: Number, required: true, index: true},
+    photo: {data: Buffer, contentType: String},
+    tags: {type: [String], index: true}
   },
   {
     autoIndex: process.env.NODE_ENV !== 'production', // no crear los índices automáticamente en producción (los crearé yo cuando me convenga)

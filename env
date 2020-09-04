@@ -1,0 +1,1 @@
+MONGODB_CONNECTION_STRING = 'mongodb:http://localhost:3000/nodepop'
