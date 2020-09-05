@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 #!/usr/bin/env node
 
 require('dotenv').config(); // cargar .env, ponerlo en process.env
@@ -6,22 +7,22 @@ require('dotenv').config(); // cargar .env, ponerlo en process.env
  * Module dependencies.
  */
 
-import app, { set } from '../app';
-var debug = require('debug')('nodepop:server');
-import { createServer } from 'http';
+var app = require('../app');
+var debug = require('debug')('nodeapi:server');
+var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-set('port', port);
+app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = createServer(app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.

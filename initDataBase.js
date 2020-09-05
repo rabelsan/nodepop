@@ -5,8 +5,7 @@ require('dotenv').config();
 
 const readline = require('readline');
 const conn = require('./lib/connectMongoose');
-const Adevertisement = require('./models/Advertisement');
-const fs = require('fs');
+const Advertisement = require('./models/Advertisement');
 
 conn.once('open', async () => {
   try {
@@ -37,17 +36,25 @@ async function initAdvertisements() {
 
   // loading test documents
   console.log('Loading advertisements...');
-  var new_img = new Img;
-    new_img.img.data = fs.readFileSync('./public/images/trek-madone-SLR7.jpg')
-    new_img.img.contentType = 'image/jpeg';
   const result = await Advertisement.insertMany([
-    { name: 'Trek Madone SLR7', sale: true, price: 5800, photo: {data: fs.readFileSync('./public/images/trek-madone-SLR7.jpg'),  contentType:'image/jpeg'}},
-    { name: 'Guantes Blegrass Manatee', sale: true, price: 12, photo: {data: fs.readFileSync('./public/images/guantes-bluegrass_manatee.jpg'),  contentType:'image/jpeg'}}
+    { name: 'Trek Madone SLR7', 
+      sale: true, 
+      price: 5800, 
+      photo: './public/images/bike-trek-madone-SLR7.jpg',
+      tags: ['bicicletas','bycicles','trek','madone']
+    },
+    { name: 'Guantes Bluegrass Manatee', 
+      sale: false, 
+      price: 12, 
+      photo: './public/images/guantes-bluegrass_manatee.jpg',
+      tags: ['guantes','globes','bicicleta','bycicle']
+    }
   ]);
-  console.log(`${result.length} have been created.`);
+  console.log(`${result.length} advertisements have been created.`);
 }
 
 function askUser(textoPregunta) {
+  // eslint-disable-next-line no-unused-vars
   return new Promise((resolve, reject) => {
     const rl = readline.createInterface({
       input: process.stdin,

@@ -8,17 +8,17 @@ const advertisementSchema = mongoose.Schema({
     name: { type: String, required:true, index: true},
     sale: {type: Boolean, required: true},
     price: {type: Number, required: true, index: true},
-    photo: {data: Buffer, contentType: String},
+    photo: {type: String},
     tags: {type: [String], index: true}
   },
   {
-    autoIndex: process.env.NODE_ENV !== 'production', // no crear los índices automáticamente en producción (los crearé yo cuando me convenga)
+    autoIndex: process.env.NODE_ENV !== 'production', // do not create automatically indexes in production env
   }
 );
 
 // método estático
-advertisementSchema.statics.lista = function(filtro, limit, skip, sort, fields) {
-  const query = Agente.find(filtro);
+advertisementSchema.statics.list = function(filtro, limit, skip, sort, fields) {
+  const query = Advertisement.find(filtro);
   query.limit(limit);
   query.skip(skip);
   query.sort(sort);
@@ -27,7 +27,7 @@ advertisementSchema.statics.lista = function(filtro, limit, skip, sort, fields) 
 }
 
 // crear el modelo
-const Agente = mongoose.model('Advertisements', advertisementSchema);
+const Advertisement = mongoose.model('Advertisement', advertisementSchema);
 
 // exportar el modelo
-module.exports = Agente;
+module.exports = Advertisement;
