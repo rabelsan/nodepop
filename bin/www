@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
 #!/usr/bin/env node
 
-require('dotenv').config(); // cargar .env, ponerlo en process.env
+require('dotenv').config(); // load .env in process.env
 
 /**
  * Module dependencies.

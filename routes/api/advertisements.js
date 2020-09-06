@@ -2,12 +2,10 @@
 var express = require('express');
 const multer = require('multer');
 var router = express.Router();
-const Agente = require('../../models/Adevertisement');
+const Advertisement = require('../../models/Advertisement');
 //uuid: For the creation of RFC4122 UUIDs
 // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-
-const { v4: uuidv4, parse: uuidParse } = require('uuid');
-console.log(uuidParse(uuidv4())); 
+const { v4: uuidv4 } = require('uuid');
 
 const storage = multer.diskStorage({
   destination: function( req, file, cb) {
@@ -24,10 +22,13 @@ const upload = multer({ storage: storage });
 router.get('/', async function(req, res, next) {
   try {
 
-    // http://localhost:3000/api/agentes?name=Smith
-    const name = req.query.name;
-    // http://localhost:3000/api/agentes?age=36
-    const age = req.query.age;
+    // http://localhost:3000/api/agentes?price=12
+    // http://localhost:3000/api/agentes?price=-12
+    // http://localhost:3000/api/agentes?price=12-
+    // http://localhost:3000/api/agentes?price=12-300
+    const price = req.query.price;
+    // http://localhost:3000/api/agentes?tags=bycicle%20trek
+    const tags = req.query.tags;
 
     // http://localhost:3000/api/agentes?limit=2
     const limit = parseInt(req.query.limit || 10);
@@ -43,15 +44,15 @@ router.get('/', async function(req, res, next) {
 
     const filtro = {};
 
-    if (name) {
-      filtro.name = name;
+    if (price) {
+      filtro.price = price;
     }
 
-    if (age) {
-      filtro.age = age;
+    if (tags) {
+      filtro.tags = tags;
     }
 
-    const advertisements = await Agente.list(filtro, limit, skip, sort, fields);
+    const advertisements = await Advertisement.list(filtro, limit, skip, sort, fields);
     res.json(advertisements);
   } catch (err) {
     next(err);
