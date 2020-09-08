@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
     cb(null, './public/images/');
   },
   filename: function(req, file, cb) {
-    const myFilename = `ad_${file.fieldname}_${uuidParse(uuidv4())}`;
+    const myFilename = `ad_${uuidv4()}_${file.originalname}`;
     cb(null, myFilename);
   }
 });
@@ -22,8 +22,8 @@ const upload = multer({ storage: storage });
 router.get('/', async function(req, res, next) {
   try {
 
-    // http://localhost:3000/api/agentes?price=12
     // http://localhost:3000/api/agentes?price=-12
+    // http://localhost:3000/api/agentes?price=12
     // http://localhost:3000/api/agentes?price=12-
     // http://localhost:3000/api/agentes?price=12-300
     const price = req.query.price;
@@ -40,19 +40,25 @@ router.get('/', async function(req, res, next) {
     const sort = req.query.sort;
 
     // http://localhost:3000/api/agentes?fields=age%20-_id
-    const fields = req.query.fields;
-
-    const filtro = {};
+    const fields = (req.query.fields) ? req.query.fields : '-__v'; 
+    
+    const filter = {};
+    var filterExp;
 
     if (price) {
-      filtro.price = price;
+      filterExp = priceFilter(price);
+      if (filterExp !== null) {
+        filter.price = filterExp;
+      }  
+      //filtro.price = price;
     }
-
+    console.log('tags',tags);
     if (tags) {
-      filtro.tags = tags;
+      filter.tags = tags;
     }
+    console.log(filter);
 
-    const advertisements = await Advertisement.list(filtro, limit, skip, sort, fields);
+    const advertisements = await Advertisement.list(filter, limit, skip, sort, fields);
     res.json(advertisements);
   } catch (err) {
     next(err);
@@ -74,14 +80,17 @@ router.get('/:_id', async (req, res, next) => {
   }
 });
 
-/* POST /api/ads */
-router.post('/', async (req, res, next) => {
+/* POST /api/ads/upload */
+router.post('/upload', upload.single('photo'), async (req, res, next) => {
+  console.log(req.file);
+  console.log(req.body);
+
   try {
     const adData = req.body;
+    adData.photo = req.file.destination+req.file.filename;
 
     // create the document in memory
     const advertisement = new Advertisement(adData);
-
     // save into database
     const adSaved = await advertisement.save();
 
@@ -123,10 +132,30 @@ router.delete('/:_id', async (req, res, next) => {
   }
 });
 
-// eslint-disable-next-line no-unused-vars
-router.post('/upload', upload.single('image'), (req, res, next) => {
-  console.log(req.file);
-  res.send('ok');
-});
+//Price filter: Validates de filter and returns the price filter expression if correct. 
+//Otherwise, it returns null.
+function priceFilter(price) {
+  var priceFilter = null;
+  var priceArray = [];
+  var re0 = new RegExp('[0-9]+\-[0-9]+|\-[0-9]+|[0-9]+\-|[0-9]+');
+  var re1 = new RegExp('[0-9]+\-[0-9]+');
+  var re2 = new RegExp('\-[0-9]+');
+  var re3 = new RegExp('[0-9]+\-');
+  var re4 = new RegExp('[0-9]+');
+
+  if (re0.test(price)) {
+    priceArray = re0.exec(price)[0].split('-');
+    if (re1.test(price)) {
+      priceFilter = { $gte: priceArray[0], $lte: +priceArray[1] };
+    } else if (re2.test(price)) {
+      priceFilter = { $lte: priceArray[1]};
+    } else if (re3.test(price)) {
+      priceFilter = { $gte: priceArray[0] };
+    } else if (re4.test(price)) {
+      priceFilter = priceArray[0];
+    } 
+  }
+  return priceFilter;
+}
 
 module.exports = router;

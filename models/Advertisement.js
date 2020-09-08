@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 
 // crear un esquema (https://mongoosejs.com/docs/schematypes.html)
 const advertisementSchema = mongoose.Schema({
-    name: { type: String, required:true, index: true},
-    sale: {type: Boolean, required: true},
-    price: {type: Number, required: true, index: true},
+    name: { type: String, required: [true, 'Advertisement name is mandatory!'], index: true},
+    sale: {type: Boolean, default: true},
+    price: {type: Number, required: [true, 'Price required'], index: true},
     photo: {type: String},
     tags: {type: [String], index: true}
   },
@@ -17,8 +17,8 @@ const advertisementSchema = mongoose.Schema({
 );
 
 // método estático
-advertisementSchema.statics.list = function(filtro, limit, skip, sort, fields) {
-  const query = Advertisement.find(filtro);
+advertisementSchema.statics.list = function(filter, limit, skip, sort, fields) {
+  const query = Advertisement.find(filter);
   query.limit(limit);
   query.skip(skip);
   query.sort(sort);
