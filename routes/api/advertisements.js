@@ -50,11 +50,13 @@ router.get('/', async function(req, res, next) {
       if (filterExp !== null) {
         filter.price = filterExp;
       }  
-      //filtro.price = price;
     }
-    console.log('tags',tags);
+    
     if (tags) {
-      filter.tags = tags;
+      filterExp = tagFilter(tags);
+      if (filterExp !== null) {
+        filter.tags = filterExp;
+      }  
     }
     console.log(filter);
 
@@ -132,7 +134,7 @@ router.delete('/:_id', async (req, res, next) => {
   }
 });
 
-//Price filter: Validates de filter and returns the price filter expression if correct. 
+//Price filter: Validates the filter and returns the price filter expression if correct. 
 //Otherwise, it returns null.
 function priceFilter(price) {
   var priceFilter = null;
@@ -157,5 +159,18 @@ function priceFilter(price) {
   }
   return priceFilter;
 }
+
+//Tags filter: Validates the filter and returns the tag filter expression if correct. 
+//Otherwise, it returns null.
+function tagFilter(tags) {
+  var tagFilter = null;
+  var tagArray = tags.replace(/ {2}/g, '').split(' ');
+
+  for (var i=0; i<tagArray.length; i++) {  
+        tagArray[i] = '.*' + tagArray[i] + '.*';         
+  }
+  tagFilter = new RegExp(tagArray.join('|'));
+  return tagFilter;
+} 
 
 module.exports = router;
