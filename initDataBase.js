@@ -40,13 +40,13 @@ async function initAdvertisements() {
     { name: 'Trek Madone SLR7', 
       sale: true, 
       price: 5800, 
-      photo: './public/images/bike-trek-madone-SLR7.jpg',
+      photo: 'images/bike-trek-madone-SLR7.jpg',
       tags: ['bicicletas','bycicles','trek','madone']
     },
     { name: 'Guantes Bluegrass Manatee', 
       sale: false, 
       price: 12, 
-      photo: './public/images/guantes-bluegrass_manatee.jpg',
+      photo: 'images/guantes-bluegrass-manatee.jpg',
       tags: ['guantes','globes','bicicleta','bycicle']
     }
   ]);

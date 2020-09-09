@@ -1,9 +1,18 @@
 var express = require('express');
 var router = express.Router();
+const Advertisement = require('../models/Advertisement');
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', async function(req, res, next) {
+  try {
+  
+    const advertisements = await Advertisement.list();
+    res.render('index', { title: 'Nodepop', ads: advertisements });
+  
+  } catch(err) {
+    next(err);  
+  }
 });
 
 module.exports = router;

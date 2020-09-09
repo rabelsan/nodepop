@@ -4,12 +4,15 @@ const multer = require('multer');
 var router = express.Router();
 const Advertisement = require('../../models/Advertisement');
 //uuid: For the creation of RFC4122 UUIDs
-// ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+// Sample ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 const { v4: uuidv4 } = require('uuid');
+const fullImgPath = './public/images/';
+const imgFolder = 'images/';
+
 
 const storage = multer.diskStorage({
   destination: function( req, file, cb) {
-    cb(null, './public/images/');
+    cb(null, fullImgPath);
   },
   filename: function(req, file, cb) {
     const myFilename = `ad_${uuidv4()}_${file.originalname}`;
@@ -58,10 +61,10 @@ router.get('/', async function(req, res, next) {
         filter.tags = filterExp;
       }  
     }
-    console.log(filter);
-
+  
     const advertisements = await Advertisement.list(filter, limit, skip, sort, fields);
     res.json(advertisements);
+  
   } catch (err) {
     next(err);
   }
@@ -89,7 +92,7 @@ router.post('/upload', upload.single('photo'), async (req, res, next) => {
 
   try {
     const adData = req.body;
-    adData.photo = req.file.destination+req.file.filename;
+    adData.photo = imgFolder+req.file.filename;
 
     // create the document in memory
     const advertisement = new Advertisement(adData);
