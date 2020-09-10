@@ -25,13 +25,16 @@ const upload = multer({ storage: storage });
 router.get('/', async function(req, res, next) {
   try {
 
-    // http://localhost:3000/api/agentes?price=-12
-    // http://localhost:3000/api/agentes?price=12
-    // http://localhost:3000/api/agentes?price=12-
-    // http://localhost:3000/api/agentes?price=12-300
-    const price = req.query.price;
-    // http://localhost:3000/api/agentes?tags=bycicle%20trek
-    const tags = req.query.tags;
+    // http://localhost:3000/api/agentes?precio=-12
+    // http://localhost:3000/api/agentes?precio=12
+    // http://localhost:3000/api/agentes?precio=12-
+    // http://localhost:3000/api/agentes?precio=12-300
+    const precio = req.query.precio;
+    // http://localhost:3000/api/agentes?tag=bycicle%20trek
+    const tag = req.query.tag;
+    // http://localhost:3000/api/agentes?venta=true
+    // http://localhost:3000/api/agentes?venta=false
+    const venta = req.query.venta;
 
     // http://localhost:3000/api/agentes?limit=2
     const limit = parseInt(req.query.limit || 10);
@@ -48,19 +51,27 @@ router.get('/', async function(req, res, next) {
     const filter = {};
     var filterExp;
 
-    if (price) {
-      filterExp = priceFilter(price);
+    if (precio) {
+      filterExp = priceFilter(precio);
       if (filterExp !== null) {
         filter.price = filterExp;
       }  
     }
     
-    if (tags) {
-      filterExp = tagFilter(tags);
+    if (tag) {
+      filterExp = tagFilter(tag);
       if (filterExp !== null) {
         filter.tags = filterExp;
       }  
     }
+
+    if (venta) {
+      filterExp = saleFilter(venta);
+      if (filterExp !== null) {
+        filter.sale = filterExp;
+      }  
+    }
+
   
     const advertisements = await Advertisement.list(filter, limit, skip, sort, fields);
     res.json(advertisements);
@@ -176,4 +187,15 @@ function tagFilter(tags) {
   return tagFilter;
 } 
 
+//Sales filter: Validates the filter and returns the sale filter expression if correct. 
+//Otherwise, it returns null.
+function saleFilter(sale) {
+  var saleFilter = null;
+  
+  if ((sale === 'true') || (sale === 'false')) {
+    saleFilter = (sale === 'true') ? { $eq: true} : { $eq: false};
+  }
+ 
+  return saleFilter;
+} 
 module.exports = router;

@@ -18,12 +18,12 @@
 }
 
 .img-frame {
-    height: 30vw;
+    height: 25vw;
     width: 40vw;
 }
 
 .image {
     padding: 1rem 1rem;
-    max-width: 70%;
-    max-height: 70%;
+    max-width: 80%;
+    max-height: 80%;
 }
