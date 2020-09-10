@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+    &::before, &::after {
+      box-sizing: border-box;
+    }
+}
+
+.container {
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 40vw 50vw;
+    grid-template-rows: auto;
+    grid-template-areas: "content image";
+}
+
+.content {
+    padding: 0.5rem 0.5rem;    
+}
+
+.img-frame {
+    height: 30vw;
+    width: 40vw;
+}
+
+.image {
+    padding: 1rem 1rem;
+    max-width: 70%;
+    max-height: 70%;
+}
