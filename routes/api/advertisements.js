@@ -99,9 +99,6 @@ router.get('/:_id', async (req, res, next) => {
 
 /* POST /api/ads/upload */
 router.post('/upload', upload.single('photo'), async (req, res, next) => {
-  //console.log(req.file);
-  //console.log(req.body);
-
   try {
     const adData = req.body;
     adData.photo = imgFolder+req.file.filename;
@@ -123,7 +120,7 @@ router.put('/:_id', async (req, res, next) => {
   try {
     const _id = req.params._id;
     const adData = req.body;
-
+    console.log(req.body);
     const adSaved = await Advertisement.findOneAndUpdate({ _id: _id}, adData, {
       new: true,
       useFindAndModify: false // in order to avoid deprecated warningd

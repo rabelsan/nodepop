@@ -1,7 +1,7 @@
 {
-  "name": "nodepop",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@rabelsan/nodepop",
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env DEBUG=nodeapi:* PORT=3000 NODE_ENV=development nodemon",
