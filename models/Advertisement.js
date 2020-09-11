@@ -3,7 +3,7 @@
 
 const mongoose = require('mongoose');
 
-// crear un esquema (https://mongoosejs.com/docs/schematypes.html)
+//  Mongoose schema definition (https://mongoosejs.com/docs/schematypes.html)
 const advertisementSchema = mongoose.Schema({
     name: { type: String, required: [true, 'Advertisement name is mandatory!'], index: true},
     sale: {type: Boolean, default: true},
@@ -16,7 +16,7 @@ const advertisementSchema = mongoose.Schema({
   }
 );
 
-// método estático
+// Static method for db queries
 advertisementSchema.statics.list = function(filter, limit, skip, sort, fields) {
   const query = Advertisement.find(filter);
   query.limit(limit);
@@ -26,8 +26,8 @@ advertisementSchema.statics.list = function(filter, limit, skip, sort, fields) {
   return query.exec();
 }
 
-// crear el modelo
+// Model creation
 const Advertisement = mongoose.model('Advertisement', advertisementSchema);
 
-// exportar el modelo
+// Model export
 module.exports = Advertisement;

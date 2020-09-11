@@ -3,16 +3,17 @@ var express = require('express');
 const multer = require('multer');
 var router = express.Router();
 const Advertisement = require('../../models/Advertisement');
-//uuid: For the creation of RFC4122 UUIDs
+//uuid: Package For the creation of RFC4122 UUIDs
 // Sample ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 const { v4: uuidv4 } = require('uuid');
-const fullImgPath = './public/images/';
-const imgFolder = 'images/';
 
+//Folders paths
+const publicPath = './public/'
+const imgFolder = 'images/';
 
 const storage = multer.diskStorage({
   destination: function( req, file, cb) {
-    cb(null, fullImgPath);
+    cb(null, publicPath+imgFolder);
   },
   filename: function(req, file, cb) {
     const myFilename = `ad_${uuidv4()}_${file.originalname}`;
@@ -98,8 +99,8 @@ router.get('/:_id', async (req, res, next) => {
 
 /* POST /api/ads/upload */
 router.post('/upload', upload.single('photo'), async (req, res, next) => {
-  console.log(req.file);
-  console.log(req.body);
+  //console.log(req.file);
+  //console.log(req.body);
 
   try {
     const adData = req.body;
@@ -140,8 +141,17 @@ router.delete('/:_id', async (req, res, next) => {
   try {
     const _id = req.params._id;
 
+    //Before deleting the advertisement, find the item in order to get the photo path and remove it after delete de ad
+    const advertisement = await Advertisement.findOne({ _id: _id});
+    const fs = require('fs')
     await Advertisement.deleteOne({ _id: _id });
-
+    fs.unlink(publicPath+advertisement.photo, (err) => {
+      if (err) {
+        console.error(err.message);
+        return
+      }
+    })
+    
     res.json();
   } catch (err) {
     next(err);

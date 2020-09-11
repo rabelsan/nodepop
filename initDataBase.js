@@ -48,6 +48,18 @@ async function initAdvertisements() {
       price: 12, 
       photo: 'images/guantes-bluegrass-manatee.jpg',
       tags: ['guantes','globes','bicicleta','bycicle']
+    },
+    { name: 'Casco Dexter Proton Negan', 
+      sale: true, 
+      price: 60, 
+      photo: 'images/casco-Dexter-Proton-Negan.jpg',
+      tags: ['casco','integral','moto','motocicleta']
+    },
+    { name: 'Armario dos puertas correderas', 
+      sale: true, 
+      price: 75, 
+      photo: 'images/armario-2-puertas-correderas.jpeg',
+      tags: ['armario','dos puertas','corredera']
     }
   ]);
   console.log(`${result.length} advertisements have been created.`);
