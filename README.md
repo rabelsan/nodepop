@@ -153,6 +153,12 @@ Returns: HTTPCode 200
 ./bin/mongod --dbpath ./data/db --directoryperdb
 ```
 
+## APIDOC (Requires to start the application first)
+
+<p>
+  <a href="http://localhost:3000/apidoc/index.html" target="_blank">API Reference</a>
+</p>
+
 ## Author
 
 👤 **Ramón Beltrán**

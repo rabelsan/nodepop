@@ -3,7 +3,6 @@ var router = express.Router();
 const Advertisement = require('../models/Advertisement');
 
 
-/* GET home page. */
 router.get('/', async function(req, res, next) {
   try {
   
