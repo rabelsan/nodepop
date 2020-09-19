@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 //  Mongoose schema definition (https://mongoosejs.com/docs/schematypes.html)
 const advertisementSchema = mongoose.Schema({
     name: { type: String, required: [true, 'Advertisement name is mandatory!'], index: true},
-    sale: {type: Boolean, default: true},
+    sale: {type: Boolean, default: true, index: true},
     price: {type: Number, required: [true, 'Price required'], index: true},
     photo: {type: String},
     tags: {type: [String], index: true}
