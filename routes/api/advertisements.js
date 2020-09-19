@@ -8,7 +8,6 @@ const lib = require('../../lib/utils.js');
 //uuid: Package For the creation of RFC4122 UUIDs
 // Sample ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 const { v4: uuidv4 } = require('uuid');
-const utils = require('../../lib/utils');
 
 //Folders paths
 const publicPath = './public/'
